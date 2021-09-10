@@ -1,0 +1,7 @@
+{
+  "name": "autenticacion-biometrica",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
