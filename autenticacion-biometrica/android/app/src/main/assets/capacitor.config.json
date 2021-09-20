@@ -1,6 +1,6 @@
 {
-	"appId": "io.ionic.starter",
-	"appName": "autenticacion-biometrica",
+	"appId": "com.ph.camara",
+	"appName": "capacitorCamara",
 	"webDir": "www",
 	"bundledWebRuntime": false
 }

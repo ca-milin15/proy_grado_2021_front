@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
+
 @Component({
   selector: 'app-autenticacion',
   templateUrl: './autenticacion.page.html',
@@ -7,7 +8,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AutenticacionPage implements OnInit {
 
-  constructor() { }
+
+  constructor() {
+
+  }
 
   ngOnInit() {
   }
