@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { SafeResourceUrl } from '@angular/platform-browser';
 
 import {CameraSource, CameraResultType, Camera} from '@capacitor/camera';
@@ -13,6 +13,7 @@ export class CamaraComponent implements OnInit {
   image: SafeResourceUrl;
   imagespan: any;
   foto: any;
+  @Output() fotografia = new EventEmitter();
 
   constructor() {
     this.image = '../../../../assets/user-biometric.png';
@@ -26,13 +27,12 @@ export class CamaraComponent implements OnInit {
       quality: 90,
       allowEditing: false,
       source: CameraSource.Camera,
-      resultType: CameraResultType.Uri,
+      resultType: CameraResultType.Base64,
       presentationStyle: 'popover'
     });
 
-    this.image = image.webPath;
-    this.foto = JSON.stringify(image);
-    console.log('image.webPath: ', image.webPath)
+    this.fotografia.emit(image.base64String);
+    console.log('emitido');
   }
 
 }

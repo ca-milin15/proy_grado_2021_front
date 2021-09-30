@@ -5,5 +5,7 @@
 </ion-header>
 
 <ion-content>
-  <app-camara></app-camara>
+  <app-camara
+    (fotografia) = "procesarFotografia($event)"
+  ></app-camara>
 </ion-content>
