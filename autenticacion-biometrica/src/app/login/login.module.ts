@@ -4,9 +4,9 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { FolderPageRoutingModule } from './folder-routing.module';
+import { LoginPageRoutingModule } from './login-routing.module';
 
-import { FolderPage } from './folder.page';
+import { LoginPage } from './login.page';
 import { MbscModule } from '@mobiscroll/angular';
 
 @NgModule({
@@ -14,9 +14,9 @@ import { MbscModule } from '@mobiscroll/angular';
     CommonModule,
     FormsModule,
     IonicModule,
-    FolderPageRoutingModule, 
+    LoginPageRoutingModule, 
     MbscModule
   ],
-  declarations: [FolderPage]
+  declarations: [LoginPage]
 })
-export class FolderPageModule {}
+export class LoginPageModule {}

@@ -15,7 +15,12 @@
   </ion-header>
 
   <div id="container">
-    <strong class="capitalize">{{ folder }}</strong>
-    <p>Explore <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+    <mbsc-card [options]="settings">
+      <mbsc-card-content>
+          Ingresar al TdeA por medio de reconocimiento facial es un hecho! <br>
+      </mbsc-card-content>
+      <img src="../../assets/icon/ban1.jpg" />
+      <mbsc-card-footer>Leer nota completa. Clic aqui.</mbsc-card-footer>
+  </mbsc-card>
   </div>
 </ion-content>
