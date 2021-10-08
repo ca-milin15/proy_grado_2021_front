@@ -30,9 +30,8 @@ export class CamaraComponent implements OnInit {
       resultType: CameraResultType.Base64,
       presentationStyle: 'popover'
     });
-
-    this.fotografia.emit(image.base64String);
-    console.log('emitido');
+    console.log('image: ', image);
+    this.fotografia.emit(image);
   }
 
 }
