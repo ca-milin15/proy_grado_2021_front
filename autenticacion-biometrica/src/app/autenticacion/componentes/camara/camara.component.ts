@@ -1,7 +1,8 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { SafeResourceUrl } from '@angular/platform-browser';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
-import {CameraSource, CameraResultType, Camera} from '@capacitor/camera';
+import {CameraSource, CameraResultType, Camera, CameraDirection} from '@capacitor/camera';
+import { UtilidadesService } from 'src/app/utilidades/utilidades.service';
 
 @Component({
   selector: 'app-camara',
@@ -12,10 +13,10 @@ export class CamaraComponent implements OnInit {
 
   image: SafeResourceUrl;
   imagespan: any;
-  foto: any;
   @Output() fotografia = new EventEmitter();
 
-  constructor() {
+  constructor(public utilidadesService: UtilidadesService, 
+    private sanitizer: DomSanitizer) {
     this.image = '../../../../assets/user-biometric.png';
   }
 
@@ -27,10 +28,12 @@ export class CamaraComponent implements OnInit {
       quality: 90,
       allowEditing: false,
       source: CameraSource.Camera,
+      direction: CameraDirection.Front,
       resultType: CameraResultType.Base64,
       presentationStyle: 'popover'
     });
-    console.log('image: ', image);
+    let foto = this.utilidadesService.dataURItoBlob(image);
+    this.image = this.sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(foto));
     this.fotografia.emit(image);
   }
 

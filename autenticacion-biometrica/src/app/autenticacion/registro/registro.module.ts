@@ -8,6 +8,7 @@ import { RegistroPageRoutingModule } from './registro-routing.module';
 
 import { RegistroPage } from './registro.page';
 import { AutenticacionComponentesModule } from '../componentes/componentes.module';
+import { MbscModule } from '@mobiscroll/angular';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { AutenticacionComponentesModule } from '../componentes/componentes.modul
     FormsModule,
     IonicModule,
     AutenticacionComponentesModule,
-    RegistroPageRoutingModule
+    RegistroPageRoutingModule, 
+    MbscModule
   ],
   declarations: [RegistroPage]
 })

@@ -12,7 +12,9 @@ import { UtilidadesService } from '../../utilidades/utilidades.service';
 export class AutenticacionPage implements OnInit {
 
   autenticacionEndpoint: string = '/autenticacion';
-
+  imageBlob: any;
+  fotografia: any;
+  
   constructor(private httpClient: HttpClient, 
     private autenticacionServiceService: AutenticacionServiceService, 
     public utilidadesService: UtilidadesService) {
@@ -23,18 +25,22 @@ export class AutenticacionPage implements OnInit {
   }
 
   procesarFotografia (fotografia) {
-    console.log('fotografia: ', fotografia)
-    const imageName = new Date().getTime().toString().concat('.').concat(fotografia.format);
-    const imageBlob = this.utilidadesService.dataURItoBlob(fotografia);
-    const imageFile = new File([imageBlob], imageName, { type: 'image/'.concat(fotografia.format) });
+    this.imageBlob = this.utilidadesService.dataURItoBlob(fotografia);
+    this.fotografia = fotografia;
+  }
+
+  enviarFotografia () {
+    const imageName = new Date().getTime().toString().concat('.').concat(this.fotografia.format);
+    const imageFile = new File([this.imageBlob], imageName, { type: 'image/'.concat(this.fotografia.format) });
     let formData = new FormData();
     formData.append('fotografia', imageFile);
-    let respuesta = this.autenticacionServiceService.ejecutarPeticion(this.autenticacionEndpoint, formData);
-    if(respuesta.status === 200){
+
+    this.autenticacionServiceService.ejecutarPeticion(this.autenticacionEndpoint, formData)
+    .subscribe((ok) => {
       this.utilidadesService.presentAlert('Exito!', 'La operación se ha llevado a cabo exitosamente.', '');
-    } else {
+    },(err) => {
       this.utilidadesService.presentAlert('Error!', 'Ha ocurrido un error en la operación.', '');
-    }
+    });
   }
 
 }

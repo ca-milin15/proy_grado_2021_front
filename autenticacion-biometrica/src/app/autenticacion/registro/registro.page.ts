@@ -12,6 +12,8 @@ import { AutenticacionServiceService } from 'src/app/autenticacion-service.servi
 export class RegistroPage implements OnInit {
 
   registroEndpoint: string = '/registro/registrar-datos-biometricos';
+  imageBlob: any;
+  fotografia: any;
 
   constructor(private httpClient: HttpClient, 
     private autenticacionServiceService: AutenticacionServiceService,
@@ -21,18 +23,21 @@ export class RegistroPage implements OnInit {
   }
 
   procesarFotografia (fotografia) {
-    console.log('fotografia: ', fotografia)
-    const imageName = new Date().getTime().toString().concat('.').concat(fotografia.format);
-    const imageBlob = this.utilidadesService.dataURItoBlob(fotografia);
-    const imageFile = new File([imageBlob], imageName, { type: 'image/'.concat(fotografia.format) });
-    let formData = new FormData();
-    let respuesta = this.autenticacionServiceService.ejecutarPeticion(this.registroEndpoint, formData);
-    if(respuesta.status === 200){
-      this.utilidadesService.presentAlert('Exito!', 'La operación se ha llevado a cabo exitosamente.', '');
-    } else {
-      this.utilidadesService.presentAlert('Error!', 'Ha ocurrido un error en la operación.', '');
-    }
+    this.imageBlob = this.utilidadesService.dataURItoBlob(fotografia);
+    this.fotografia = fotografia;
   }
 
+  enviarFotografia () {
+    const imageName = new Date().getTime().toString().concat('.').concat(this.fotografia.format);
+    const imageFile = new File([this.imageBlob], imageName, { type: 'image/'.concat(this.fotografia.format) });
+    let formData = new FormData();
+    formData.append('fotografia', imageFile);
 
+    this.autenticacionServiceService.ejecutarPeticion(this.registroEndpoint, formData)
+    .subscribe((ok) => {
+      this.utilidadesService.presentAlert('Exito!', 'La operación se ha llevado a cabo exitosamente.', '');
+    },(err) => {
+      this.utilidadesService.presentAlert('Error!', 'Ha ocurrido un error en la operación.', '');
+    });
+  }
 }

@@ -9,6 +9,7 @@ import { AutenticacionPageRoutingModule } from './autenticacion-routing.module';
 import { AutenticacionPage } from './autenticacion.page';
 
 import { AutenticacionComponentesModule } from '../componentes/componentes.module';
+import { MbscModule } from '@mobiscroll/angular';
 
 @NgModule({
   imports: [
@@ -16,7 +17,8 @@ import { AutenticacionComponentesModule } from '../componentes/componentes.modul
     FormsModule,
     IonicModule,
     AutenticacionPageRoutingModule,
-    AutenticacionComponentesModule
+    AutenticacionComponentesModule, 
+    MbscModule
   ],
   declarations: [AutenticacionPage]
 })

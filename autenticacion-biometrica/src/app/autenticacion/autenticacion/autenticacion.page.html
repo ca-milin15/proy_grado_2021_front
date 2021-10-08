@@ -8,4 +8,14 @@
   <app-camara
     (fotografia) = "procesarFotografia($event)"
   ></app-camara>
+  <mbsc-button 
+    icon="plus" 
+    *ngIf="imageBlob" 
+    (click)="enviarFotografia()" 
+    color="success" 
+    block
+    icon="checkmark"
+  >
+    Enviar fotografia
+  </mbsc-button>
 </ion-content>

@@ -6,7 +6,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class AutenticacionServiceService {
 
-  contextoAplicacion: string = 'http://localhost:5000/autenticacion-biometrica/servicio';
+  contextoAplicacion: string = 'http://127.0.0.1:5000/autenticacion-biometrica/servicio';
   objetoRespuesta: {
     status: Number
     body:  {}
@@ -18,13 +18,7 @@ export class AutenticacionServiceService {
     return this.httpClient.post(
       this.contextoAplicacion.concat(url),
       body
-    ).subscribe((res) => {
-      this.objetoRespuesta.status = 200;
-      return this.objetoRespuesta;
-    }, (err) => {
-      this.objetoRespuesta.status = 400;
-      return this.objetoRespuesta;
-    });
+    );
   }
 
 }
