@@ -1,21 +1,16 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>Autenticacion biometrica</ion-title>
-  </ion-toolbar>
-</ion-header>
 
 <ion-content>
   <app-camara
     (fotografia) = "procesarFotografia($event)"
   ></app-camara>
-  <mbsc-button 
+  <ion-button 
     icon="plus" 
     *ngIf="imageBlob" 
     (click)="enviarFotografia()" 
     color="success" 
-    block
+    expand="block"
     icon="checkmark"
   >
     Enviar fotografia
-  </mbsc-button>
+  </ion-button>
 </ion-content>

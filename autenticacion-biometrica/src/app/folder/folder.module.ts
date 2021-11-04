@@ -7,15 +7,13 @@ import { IonicModule } from '@ionic/angular';
 import { FolderPageRoutingModule } from './folder-routing.module';
 
 import { FolderPage } from './folder.page';
-import { MbscModule } from '@mobiscroll/angular';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    FolderPageRoutingModule, 
-    MbscModule
+    FolderPageRoutingModule
   ],
   declarations: [FolderPage]
 })

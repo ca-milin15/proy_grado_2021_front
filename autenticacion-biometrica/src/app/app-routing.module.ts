@@ -22,7 +22,11 @@ const routes: Routes = [
   {
     path: 'login',
     loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule)
+  },  {
+    path: 'autenticacion-fin-transac',
+    loadChildren: () => import('./autenticacion-fin-transac/autenticacion-fin-transac.module').then( m => m.AutenticacionFinTransacPageModule)
   }
+
 
 ];
 

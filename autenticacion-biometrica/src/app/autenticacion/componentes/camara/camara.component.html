@@ -1,12 +1,12 @@
 <div>
-  <img [src]="image" alt="./assets/user-biometric.png" class="mbsc padding">
-  <mbsc-button 
+  <img [src]="image" alt="./assets/user-biometric.png" class="dimension-foto">
+  <ion-button 
     (click)="tomarFoto()" 
     color="primary" 
-    block
+    expand="block"
     icon="loop2"
   >
     Tomar foto
-  </mbsc-button>
+  </ion-button >
   <img *ngIf="foto" [src]="foto" alt="" class="dimension-foto">
 </div>

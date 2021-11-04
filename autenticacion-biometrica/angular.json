@@ -34,8 +34,7 @@
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "src/theme/variables.scss",
-              "src/global.scss",
-              "./node_modules/@mobiscroll/angular/dist/css/mobiscroll.min.css"
+              "src/global.scss"
             ],
             "scripts": [],
             "aot": false,

@@ -6,7 +6,8 @@ import { HttpClient } from '@angular/common/http';
 })
 export class AutenticacionServiceService {
 
-  contextoAplicacion: string = 'http://127.0.0.1:5000/autenticacion-biometrica/servicio';
+  //contextoAplicacion: string = 'http://54.208.17.40:5000/autenticacion-biometrica/servicio';
+  contextoAplicacion: string = 'http://localhost:5000/autenticacion-biometrica/servicio';
   objetoRespuesta: {
     status: Number
     body:  {}

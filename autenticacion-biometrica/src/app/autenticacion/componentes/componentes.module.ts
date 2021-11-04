@@ -5,15 +5,13 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 
 import { CamaraComponent } from './camara/camara.component';
-import { MbscModule } from '@mobiscroll/angular';
 
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
-    IonicModule, 
-    MbscModule
+    IonicModule
   ],
   declarations: [CamaraComponent],
   exports: [CamaraComponent]

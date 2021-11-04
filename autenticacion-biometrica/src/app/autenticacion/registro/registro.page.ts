@@ -15,8 +15,7 @@ export class RegistroPage implements OnInit {
   imageBlob: any;
   fotografia: any;
 
-  constructor(private httpClient: HttpClient, 
-    private autenticacionServiceService: AutenticacionServiceService,
+  constructor(private autenticacionServiceService: AutenticacionServiceService,
     public utilidadesService: UtilidadesService) { }
 
   ngOnInit() {
