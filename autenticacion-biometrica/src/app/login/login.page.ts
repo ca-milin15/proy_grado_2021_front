@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NavController } from '@ionic/angular';
+import { LocalStorageService } from 'angular-web-storage';
 import { AutenticacionServiceService } from '../autenticacion-service.service';
 import { UtilidadesService } from '../utilidades/utilidades.service';
 
@@ -20,7 +21,8 @@ export class LoginPage implements OnInit {
 
   constructor(private navCtrl: NavController,
     private autenticacionServiceService: AutenticacionServiceService,
-    public utilidadesService: UtilidadesService) { }
+    public utilidadesService: UtilidadesService,
+    private localStorageService: LocalStorageService) { }
 
   ngOnInit() {
   }
@@ -33,9 +35,9 @@ export class LoginPage implements OnInit {
       }
       this.autenticacionServiceService.ejecutarPeticion(this.autenticacionBasicaEndpoint, payload)
       .subscribe((ok) => {
+        this.localStorageService.set('usuario', ok);
         this.navCtrl.navigateForward('folder')
       },(err) => {
-        console.log('err: ', err)
         this.utilidadesService.presentAlert('Atención!',  err.error.mensaje , '');
       });
     } else {

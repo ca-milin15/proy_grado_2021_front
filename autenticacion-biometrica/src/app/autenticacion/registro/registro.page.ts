@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { AlertController } from '@ionic/angular';
 import { UtilidadesService } from 'src/app/utilidades/utilidades.service';
 import { AutenticacionServiceService } from 'src/app/autenticacion-service.service';
+import { LocalStorageService } from 'angular-web-storage';
 
 @Component({
   selector: 'app-registro',
@@ -14,11 +15,14 @@ export class RegistroPage implements OnInit {
   registroEndpoint: string = '/registro/registrar-datos-biometricos';
   imageBlob: any;
   fotografia: any;
+  usuario: any;
 
   constructor(private autenticacionServiceService: AutenticacionServiceService,
-    public utilidadesService: UtilidadesService) { }
+    public utilidadesService: UtilidadesService,
+    private localStorageService: LocalStorageService) { }
 
   ngOnInit() {
+    this.usuario = this.localStorageService.get('usuario');
   }
 
   procesarFotografia (fotografia) {
@@ -31,6 +35,7 @@ export class RegistroPage implements OnInit {
     const imageFile = new File([this.imageBlob], imageName, { type: 'image/'.concat(this.fotografia.format) });
     let formData = new FormData();
     formData.append('fotografia', imageFile);
+    formData.append('idUsuario', this.usuario.id);
 
     this.autenticacionServiceService.ejecutarPeticion(this.registroEndpoint, formData)
     .subscribe((ok) => {

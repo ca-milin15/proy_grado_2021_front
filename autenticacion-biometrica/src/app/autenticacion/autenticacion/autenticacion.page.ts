@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AutenticacionServiceService } from '../../autenticacion-service.service';
 import { UtilidadesService } from '../../utilidades/utilidades.service';
+import { LocalStorageService } from 'angular-web-storage';
 
 
 @Component({
@@ -17,7 +18,8 @@ export class AutenticacionPage implements OnInit {
   
   constructor(private httpClient: HttpClient, 
     private autenticacionServiceService: AutenticacionServiceService, 
-    public utilidadesService: UtilidadesService) {
+    public utilidadesService: UtilidadesService,
+    private localStorageService: LocalStorageService) {
     // This is intentionally
   }
 
