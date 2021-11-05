@@ -36,7 +36,7 @@ export class LoginPage implements OnInit {
       this.autenticacionServiceService.ejecutarPeticion(this.autenticacionBasicaEndpoint, payload)
       .subscribe((ok) => {
         this.localStorageService.set('usuario', ok);
-        this.navCtrl.navigateForward('folder')
+        this.navCtrl.navigateForward('folder');
       },(err) => {
         this.utilidadesService.presentAlert('Atención!',  err.error.mensaje , '');
       });

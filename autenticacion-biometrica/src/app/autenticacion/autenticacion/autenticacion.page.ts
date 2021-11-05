@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { AutenticacionServiceService } from '../../autenticacion-service.service';
 import { UtilidadesService } from '../../utilidades/utilidades.service';
 import { LocalStorageService } from 'angular-web-storage';
+import { NavController } from '@ionic/angular';
 
 
 @Component({
@@ -15,15 +16,18 @@ export class AutenticacionPage implements OnInit {
   autenticacionEndpoint: string = '/autenticacion';
   imageBlob: any;
   fotografia: any;
+  usuario: any;
   
-  constructor(private httpClient: HttpClient, 
+  constructor(
     private autenticacionServiceService: AutenticacionServiceService, 
     public utilidadesService: UtilidadesService,
-    private localStorageService: LocalStorageService) {
+    private localStorageService: LocalStorageService,
+    private navCtrl: NavController) {
     // This is intentionally
   }
 
   ngOnInit() {
+    this.usuario = this.localStorageService.get('usuario')
   }
 
   procesarFotografia (fotografia) {
@@ -37,11 +41,13 @@ export class AutenticacionPage implements OnInit {
     let formData = new FormData();
     formData.append('fotografia', imageFile);
 
-    this.autenticacionServiceService.ejecutarPeticion(this.autenticacionEndpoint, formData)
+    this.autenticacionServiceService.ejecutarPeticionParaRetornarArchivo(this.autenticacionEndpoint, formData)
     .subscribe((ok) => {
-      this.utilidadesService.presentAlert('Exito!', 'La operación se ha llevado a cabo exitosamente.', '');
+      this.usuario.urlFotografiaRegistrada = URL.createObjectURL(ok);
+      this.localStorageService.set('usuario', this.usuario);
+      this.navCtrl.navigateForward('autenticacion-fin-transac');
     },(err) => {
-      this.utilidadesService.presentAlert('Error!', 'Ha ocurrido un error en la operación.', '');
+      this.utilidadesService.presentAlert('Error!', 'Ha ocurrido un error en el proceso de autenticacion biometrica.', '');
     });
   }
 
