@@ -1,0 +1,49 @@
+.dimension-foto {
+    padding: 1%;
+    text-align: center;
+    width:100%;
+    height: 60%;
+    border-radius: 8px;
+  }
+  
+  
+ion-icon {
+    font-size: 170px;
+    display: block;
+    margin: 0 auto;
+    color: green;
+}
+.text-bienvenido{
+    display: block;
+    margin: 0 auto;
+    font-family: 'Tahoma';
+    font-weight: bold;
+    color: #ff6600; transition: .5s; -moz-transition: .5s; -webkit-transition: .5s; -o-transition: .5s; font-family: 'Muli', sans-serif;
+}
+
+div.at-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 10%;
+  }
+  .at-item {
+    color: #000000;
+    font-size: 20px;
+    animation-name: text-shadow-drop;
+    animation-duration: 1s;
+    animation-timing-function: ease;
+    animation-delay: 0s;
+    animation-iteration-count: 1;
+    animation-direction: normal;
+    animation-fill-mode: forwards;
+  }
+  @keyframes text-shadow-drop {
+    0%{
+      text-shadow: 0 0 0 transparent;
+    }
+    100%{
+      text-shadow: -6px 6px 18px rgba(0,0,0,.35);
+    }
+  }
+  
