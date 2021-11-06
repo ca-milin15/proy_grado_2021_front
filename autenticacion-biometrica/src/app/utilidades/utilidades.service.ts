@@ -1,12 +1,17 @@
 import { Injectable } from '@angular/core';
-import { AlertController } from '@ionic/angular';
+import { AlertController, LoadingController } from '@ionic/angular';
+import { Observable } from 'rxjs/internal/Observable';
+import { from } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UtilidadesService {
 
-  constructor(public alertController: AlertController) { }
+  loading: any;
+
+  constructor(public alertController: AlertController,
+    private  loadingController: LoadingController) { }
 
   async presentAlert(titulo: string, subtitulo: string, mensaje: string) {
     const alert = await this.alertController.create({
@@ -33,11 +38,31 @@ export class UtilidadesService {
     return blob;
  }
 
- errorProcess(err) {
-  if(err.status === 0){
-    this.presentAlert('Atención!',  'No se pudo llevar a cabo la transaccion porque no tuvo conexion con el servidor.', err.message);
-  } else {
-    this.presentAlert('Atención!',  err.error.mensaje , '');
+  errorProcess(err) {
+    if(err.status === 0){
+      this.presentAlert('Atención!',  'No se pudo llevar a cabo la transaccion porque no tuvo conexion con el servidor.', err.message);
+    } else {
+      this.presentAlert('Atención!',  err.error.mensaje , '');
+    }
+  }
+
+
+  async inicializarSpinner (){
+    this.loading = await this.loadingController.create({
+      cssClass: 'my-custom-class',
+      message: 'Procesnado...',
+      spinner: 'crescent',
+      translucent: true
+    });
+    return await this.loading.present();
+  }
+
+  async detenerSpinner() {
+    if (this.loading) {
+      this.loading.dismiss()
+      this.loading = null
+      this.loading = false
+    }
   }
 }
-}
+

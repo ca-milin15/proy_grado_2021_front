@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { NavController } from '@ionic/angular';
+import { LoadingController, NavController } from '@ionic/angular';
 import { LocalStorageService } from 'angular-web-storage';
 import { AutenticacionServiceService } from '../autenticacion-service.service';
 import { UtilidadesService } from '../utilidades/utilidades.service';
@@ -23,8 +23,9 @@ export class LoginPage implements OnInit {
 
   constructor(private navCtrl: NavController,
     private autenticacionServiceService: AutenticacionServiceService,
-    public utilidadesService: UtilidadesService,
-    private localStorageService: LocalStorageService) { }
+    private utilidadesService: UtilidadesService,
+    private localStorageService: LocalStorageService,
+    private loadingController: LoadingController) { }
 
   ngOnInit() {
     this.version = environment.environment
@@ -36,16 +37,23 @@ export class LoginPage implements OnInit {
         usuario: this.form.value.usuario,
         clave: this.form.value.clave
       }
-      this.autenticacionServiceService.ejecutarPeticion(this.autenticacionBasicaEndpoint, payload)
-      .subscribe((ok) => {
-        this.localStorageService.set('usuario', ok);
-        this.navCtrl.navigateForward('folder');
-      },(err) => {
-        this.utilidadesService.errorProcess(err);
+      
+      this.utilidadesService.inicializarSpinner().then(() => {
+        this.autenticacionServiceService.ejecutarPeticion(this.autenticacionBasicaEndpoint, payload)
+        .subscribe((ok) => {
+          console.log('ojo ', ok);
+          this.localStorageService.set('usuario', ok);
+          this.navCtrl.navigateForward('folder');
+        }, (err) => {
+          console.log('err ', err);
+          this.utilidadesService.errorProcess(err);
+        });
+        this.utilidadesService.detenerSpinner();
       });
     } else {
       this.utilidadesService.presentAlert('Atención!', 'Debe completar los campos del formulario.', '');
     }
    
   }
+
 }
