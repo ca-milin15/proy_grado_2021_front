@@ -49,8 +49,8 @@ export class UtilidadesService {
 
   async inicializarSpinner (){
     this.loading = await this.loadingController.create({
-      cssClass: 'my-custom-class',
-      message: 'Procesnado...',
+      cssClass: 'spinner-class',
+      message: 'Procesando...',
       spinner: 'crescent',
       translucent: true
     });

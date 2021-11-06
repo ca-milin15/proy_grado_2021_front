@@ -43,14 +43,15 @@ export class AutenticacionPage implements OnInit {
 
     this.utilidadesService.inicializarSpinner().then(() => {
       this.autenticacionServiceService.ejecutarPeticionParaRetornarArchivo(this.autenticacionEndpoint, formData)
-      .subscribe((ok) => {
-        this.usuario.urlFotografiaRegistrada = URL.createObjectURL(ok);
-        this.localStorageService.set('usuario', this.usuario);
-        this.navCtrl.navigateForward('autenticacion-fin-transac');
-      },(err) => {
-        this.utilidadesService.presentAlert('Error!', 'Ha ocurrido un error en el proceso de autenticacion biometrica.', '');
-      });
-      this.utilidadesService.detenerSpinner();
+        .subscribe((ok) => {
+          this.usuario.urlFotografiaRegistrada = URL.createObjectURL(ok);
+          this.localStorageService.set('usuario', this.usuario);
+          this.navCtrl.navigateForward('autenticacion-fin-transac');
+          this.utilidadesService.detenerSpinner();
+        },(err) => {
+          this.utilidadesService.presentAlert('Error!', 'Ha ocurrido un error en el proceso de autenticacion biometrica.', '');
+          this.utilidadesService.detenerSpinner();
+        });
     });
   }
 

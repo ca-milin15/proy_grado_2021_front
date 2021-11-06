@@ -41,10 +41,11 @@ export class RegistroPage implements OnInit {
       this.autenticacionServiceService.ejecutarPeticion(this.registroEndpoint, formData)
       .subscribe((ok) => {
         this.utilidadesService.presentAlert('Exito!', 'La operación se ha llevado a cabo exitosamente.', '');
+        this.utilidadesService.detenerSpinner();
       },(err) => {
         this.utilidadesService.presentAlert('Error!', 'Ha ocurrido un error en la operación.', '');
+        this.utilidadesService.detenerSpinner();
       });
-      this.utilidadesService.detenerSpinner();
     });
   }
 }

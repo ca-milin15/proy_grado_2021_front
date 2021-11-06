@@ -43,10 +43,11 @@ export class LoginPage implements OnInit {
         .subscribe((ok) => {
           this.localStorageService.set('usuario', ok);
           this.navCtrl.navigateForward('folder');
+          this.utilidadesService.detenerSpinner();
         }, (err) => {
           this.utilidadesService.errorProcess(err);
+          this.utilidadesService.detenerSpinner();
         });
-        this.utilidadesService.detenerSpinner();
       });
     } else {
       this.utilidadesService.presentAlert('Atención!', 'Debe completar los campos del formulario.', '');
