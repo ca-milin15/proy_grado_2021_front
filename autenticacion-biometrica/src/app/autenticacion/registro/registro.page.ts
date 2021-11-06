@@ -37,11 +37,14 @@ export class RegistroPage implements OnInit {
     formData.append('fotografia', imageFile);
     formData.append('idUsuario', this.usuario.id);
 
-    this.autenticacionServiceService.ejecutarPeticion(this.registroEndpoint, formData)
-    .subscribe((ok) => {
-      this.utilidadesService.presentAlert('Exito!', 'La operación se ha llevado a cabo exitosamente.', '');
-    },(err) => {
-      this.utilidadesService.presentAlert('Error!', 'Ha ocurrido un error en la operación.', '');
+    this.utilidadesService.inicializarSpinner().then(() => {
+      this.autenticacionServiceService.ejecutarPeticion(this.registroEndpoint, formData)
+      .subscribe((ok) => {
+        this.utilidadesService.presentAlert('Exito!', 'La operación se ha llevado a cabo exitosamente.', '');
+      },(err) => {
+        this.utilidadesService.presentAlert('Error!', 'Ha ocurrido un error en la operación.', '');
+      });
+      this.utilidadesService.detenerSpinner();
     });
   }
 }

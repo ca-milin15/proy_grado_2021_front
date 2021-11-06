@@ -41,11 +41,9 @@ export class LoginPage implements OnInit {
       this.utilidadesService.inicializarSpinner().then(() => {
         this.autenticacionServiceService.ejecutarPeticion(this.autenticacionBasicaEndpoint, payload)
         .subscribe((ok) => {
-          console.log('ojo ', ok);
           this.localStorageService.set('usuario', ok);
           this.navCtrl.navigateForward('folder');
         }, (err) => {
-          console.log('err ', err);
           this.utilidadesService.errorProcess(err);
         });
         this.utilidadesService.detenerSpinner();
