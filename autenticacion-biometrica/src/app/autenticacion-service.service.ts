@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -7,7 +8,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 export class AutenticacionServiceService {
 
   //contextoAplicacion: string = 'http://54.208.17.40:5000/autenticacion-biometrica/servicio';
-  contextoAplicacion: string = 'http://localhost:5000/autenticacion-biometrica/servicio';
+  contextoAplicacion: string = environment.url.concat('/autenticacion-biometrica/servicio');
   objetoRespuesta: {
     status: Number
     body:  {}

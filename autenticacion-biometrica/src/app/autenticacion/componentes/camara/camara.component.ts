@@ -13,6 +13,8 @@ export class CamaraComponent implements OnInit {
 
   image: SafeResourceUrl;
   imagespan: any;
+  foto: any;
+
   @Output() fotografia = new EventEmitter();
 
   constructor(public utilidadesService: UtilidadesService, 
@@ -32,8 +34,8 @@ export class CamaraComponent implements OnInit {
       resultType: CameraResultType.Base64,
       presentationStyle: 'popover'
     });
-    let foto = this.utilidadesService.dataURItoBlob(image);
-    this.image = this.sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(foto));
+    this.foto = this.utilidadesService.dataURItoBlob(image);
+    this.image = this.sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(this.foto));
     this.fotografia.emit(image);
   }
 

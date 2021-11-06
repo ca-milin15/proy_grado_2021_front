@@ -32,4 +32,12 @@ export class UtilidadesService {
     const blob = new Blob([int8Array], { type: 'image/'.concat(dataURI.format) });
     return blob;
  }
+
+ errorProcess(err) {
+  if(err.status === 0){
+    this.presentAlert('Atención!',  'No se pudo llevar a cabo la transaccion porque no tuvo conexion con el servidor.', err.message);
+  } else {
+    this.presentAlert('Atención!',  err.error.mensaje , '');
+  }
+}
 }

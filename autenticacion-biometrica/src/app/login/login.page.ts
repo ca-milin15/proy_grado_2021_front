@@ -4,6 +4,7 @@ import { NavController } from '@ionic/angular';
 import { LocalStorageService } from 'angular-web-storage';
 import { AutenticacionServiceService } from '../autenticacion-service.service';
 import { UtilidadesService } from '../utilidades/utilidades.service';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-login',
@@ -18,6 +19,7 @@ export class LoginPage implements OnInit {
     usuario: new FormControl('', Validators.required),
     clave: new FormControl('', Validators.required)
   });
+  version: any;
 
   constructor(private navCtrl: NavController,
     private autenticacionServiceService: AutenticacionServiceService,
@@ -25,6 +27,7 @@ export class LoginPage implements OnInit {
     private localStorageService: LocalStorageService) { }
 
   ngOnInit() {
+    this.version = environment.environment
   }
 
   continuar(){
@@ -38,7 +41,7 @@ export class LoginPage implements OnInit {
         this.localStorageService.set('usuario', ok);
         this.navCtrl.navigateForward('folder');
       },(err) => {
-        this.utilidadesService.presentAlert('Atención!',  err.error.mensaje , '');
+        this.utilidadesService.errorProcess(err);
       });
     } else {
       this.utilidadesService.presentAlert('Atención!', 'Debe completar los campos del formulario.', '');
