@@ -31,9 +31,7 @@ export class AutenticacionPage implements OnInit {
   }
 
   enviarFotografia (fotografia) {
-    console.log('enviarFotografia: ', fotografia);
     this.imageBlob = this.utilidadesService.dataURItoBlob(fotografia);
-    console.log('imageBlob: ', this.imageBlob);
     this.fotografia = fotografia;
     const imageName = new Date().getTime().toString().concat('.').concat(this.fotografia.format);
     const imageFile = new File([this.imageBlob], imageName, { type: 'image/'.concat(this.fotografia.format) });

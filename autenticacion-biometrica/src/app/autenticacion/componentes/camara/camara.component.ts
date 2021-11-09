@@ -49,16 +49,15 @@ export class CamaraComponent implements OnInit {
 
 
   ngOnInit() {
-    // this.platform.ready().then(() => {
-    //   if (this.platform.is('android')) {
-    //     this.dispositivoMovil = true;
-    //   } else {
-    //     console.log("not running on Android device!");
-    //     this.dispositivoWeb = true;
-    //     this.onStartBrowserComponent();
-    //   }
-    // });
-    this.dispositivoMovil = true;
+    this.platform.ready().then(() => {
+      if (this.platform.is('android')) {
+        this.dispositivoMovil = true;
+      } else {
+        console.log("not running on Android device!");
+        this.dispositivoWeb = true;
+        this.onStartBrowserComponent();
+      }
+    });
   }
 
   async tomarFoto ()  {
@@ -76,7 +75,6 @@ export class CamaraComponent implements OnInit {
   }
 
   async enviarFotografia ()  {
-    console.log('emit this.image: ', this.image);
     this.fotografia.emit(this.image);
   }
 }
