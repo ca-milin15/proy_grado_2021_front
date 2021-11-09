@@ -1,16 +1,7 @@
 
 <ion-content>
   <app-camara
-    (fotografia) = "procesarFotografia($event)"
+    (fotografia) = "enviarFotografia($event)"
   ></app-camara>
-  <ion-button 
-    icon="plus" 
-    *ngIf="imageBlob" 
-    (click)="enviarFotografia()" 
-    color="success" 
-    expand="block"
-    icon="checkmark"
-  >
-    Enviar fotografia
-  </ion-button>
+
 </ion-content>

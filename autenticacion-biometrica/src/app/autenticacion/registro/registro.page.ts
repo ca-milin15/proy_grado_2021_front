@@ -25,12 +25,9 @@ export class RegistroPage implements OnInit {
     this.usuario = this.localStorageService.get('usuario');
   }
 
-  procesarFotografia (fotografia) {
+  enviarFotografia (fotografia) {
     this.imageBlob = this.utilidadesService.dataURItoBlob(fotografia);
     this.fotografia = fotografia;
-  }
-
-  enviarFotografia () {
     const imageName = new Date().getTime().toString().concat('.').concat(this.fotografia.format);
     const imageFile = new File([this.imageBlob], imageName, { type: 'image/'.concat(this.fotografia.format) });
     let formData = new FormData();

@@ -1,12 +1,27 @@
-<div>
-  <img [src]="image" alt="./assets/user-biometric.png" class="dimension-foto">
-  <ion-button 
-    (click)="tomarFoto()" 
-    color="primary" 
-    expand="block"
-    icon="loop2"
-  >
-    Tomar foto
-  </ion-button >
-  <img *ngIf="foto" [src]="foto" alt="" class="dimension-foto">
-</div>
+<ion-content>
+  <div *ngIf="dispositivoMovil">
+    <img [src]="imagenUrl" alt="../../assets/user-biometric.png" class="dimension-foto">
+    <ion-button 
+      (click)="tomarFoto()" 
+      color="primary" 
+      expand="block"
+      icon="loop2"
+    >
+      Tomar foto
+    </ion-button >
+    <ion-button 
+      icon="plus" 
+      *ngIf="image" 
+      (click)="enviarFotografia()" 
+      color="success" 
+      expand="block"
+      icon="checkmark"
+    >
+      Enviar fotografia
+    </ion-button>
+  </div>
+
+  <div [hidden]=" dispositivoMovil">
+    <video #video ></video>
+  </div>
+</ion-content>
