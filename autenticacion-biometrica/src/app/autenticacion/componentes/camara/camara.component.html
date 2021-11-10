@@ -22,6 +22,17 @@
   </div>
 
   <div [hidden]=" dispositivoMovil">
-    <video #video ></video>
+    <video #video class="video-componente"></video>
+
+    <div class="container">
+      <div class="row" >
+        <div class="col-sm-4" *ngFor="let captura of listaCapturas">
+          <img [src]="captura" alt="../../assets/user-biometric.png" class="dimension-minifoto">
+        </div>
+      </div>
+    </div>
+
+    <canvas #canvas id="canvas" width="640" height="480" hidden></canvas>
   </div>
+  
 </ion-content>

@@ -14,7 +14,17 @@ import { Platform } from '@ionic/angular';
 })
 export class CamaraComponent implements OnInit {
 
-  @ViewChild('video', {static: true}) video: ElementRef<HTMLVideoElement>;
+
+  @ViewChild("video") videoRef: ElementRef;
+  get video(): HTMLVideoElement {
+    return this.videoRef.nativeElement
+  }
+  
+  @ViewChild("canvas") canvasRef: ElementRef;
+  get canvas(): HTMLCanvasElement {
+    return this.canvasRef.nativeElement
+  }
+
 
   image: SafeResourceUrl;
   imagespan: any;
@@ -24,6 +34,8 @@ export class CamaraComponent implements OnInit {
   platform: any;
   prueba: boolean = true;
   imagenUrl: any;
+
+  listaCapturas: any[] = new Array(0);
 
   @Output() fotografia = new EventEmitter();
 
@@ -36,17 +48,30 @@ export class CamaraComponent implements OnInit {
     this.platform = plataforma
   }
 
+
   onStartBrowserComponent(){
+    const hdConstraints = {
+      video: { width: { min: 1280 }, height: { min: 720 } },
+    };
     if(isPlatformBrowser(this._platform) && 'mediaDevices' in navigator) {
-      navigator.mediaDevices.getUserMedia({video: true}).then((ms: MediaStream) => {
-        const _video = this.video.nativeElement;
+      navigator.mediaDevices.getUserMedia(hdConstraints).then((ms: MediaStream) => {
+        const _video = this.video;
         _video.srcObject = ms;
         _video.play(); 
+      }).then(()=> {
+        setInterval(function(video, canvas, listaCapturas, utilidadesService, sanitizer) {
+          canvas.getContext("2d").drawImage(video, 0, 0, 640, 480);
+          canvas.toBlob(function(blob){
+            if (listaCapturas.length >= 4){
+              delete listaCapturas[0];
+            }
+            listaCapturas.push(sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(blob)));
+          });
+          }, 6 * 1000, this.video, this.canvas, this.listaCapturas, this.utilidadesService, this.sanitizer); 
       });
     }
   }
-
-
+  
 
   ngOnInit() {
     this.platform.ready().then(() => {
