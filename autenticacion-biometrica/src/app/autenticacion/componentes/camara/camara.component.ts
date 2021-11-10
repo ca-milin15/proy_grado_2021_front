@@ -62,12 +62,13 @@ export class CamaraComponent implements OnInit {
         setInterval(function(video, canvas, listaCapturas, utilidadesService, sanitizer) {
           canvas.getContext("2d").drawImage(video, 0, 0, 640, 480);
           canvas.toBlob(function(blob){
-            if (listaCapturas.length >= 4){
-              delete listaCapturas[0];
+            console.log();
+            if (listaCapturas.length >= 3){
+              listaCapturas.splice(0,1);
             }
             listaCapturas.push(sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(blob)));
           });
-          }, 6 * 1000, this.video, this.canvas, this.listaCapturas, this.utilidadesService, this.sanitizer); 
+          }, 3 * 1000, this.video, this.canvas, this.listaCapturas, this.utilidadesService, this.sanitizer); 
       });
     }
   }
