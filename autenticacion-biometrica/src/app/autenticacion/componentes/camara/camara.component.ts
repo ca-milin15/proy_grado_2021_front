@@ -81,7 +81,7 @@ export class CamaraComponent implements OnInit {
       } else {
         console.log("not running on Android device!");
         this.dispositivoWeb = true;
-        this.onStartBrowserComponent();
+        //this.onStartBrowserComponent();
       }
     });
   }
