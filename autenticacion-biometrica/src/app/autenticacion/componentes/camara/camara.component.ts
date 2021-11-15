@@ -6,6 +6,7 @@ import { UtilidadesService } from 'src/app/utilidades/utilidades.service';
 
 import {isPlatformBrowser} from '@angular/common';
 import { Platform } from '@ionic/angular';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-camara',
@@ -26,6 +27,7 @@ export class CamaraComponent implements OnInit {
   }
 
 
+  contextoAplicacion: string = environment.url.concat('/autenticacion-biometrica/servicio/autenticacion');
   image: SafeResourceUrl;
   imagespan: any;
   foto: any;
@@ -48,40 +50,12 @@ export class CamaraComponent implements OnInit {
     this.platform = plataforma
   }
 
-
-  onStartBrowserComponent(){
-    const hdConstraints = {
-      video: { width: { min: 1280 }, height: { min: 720 } },
-    };
-    if(isPlatformBrowser(this._platform) && 'mediaDevices' in navigator) {
-      navigator.mediaDevices.getUserMedia(hdConstraints).then((ms: MediaStream) => {
-        const _video = this.video;
-        _video.srcObject = ms;
-        _video.play(); 
-      }).then(()=> {
-        setInterval(function(video, canvas, listaCapturas, utilidadesService, sanitizer) {
-          canvas.getContext("2d").drawImage(video, 0, 0, 640, 480);
-          canvas.toBlob(function(blob){
-            console.log();
-            if (listaCapturas.length >= 3){
-              listaCapturas.splice(0,1);
-            }
-            listaCapturas.push(sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(blob)));
-          });
-          }, 3 * 1000, this.video, this.canvas, this.listaCapturas, this.utilidadesService, this.sanitizer); 
-      });
-    }
-  }
-  
-
   ngOnInit() {
     this.platform.ready().then(() => {
       if (this.platform.is('android')) {
         this.dispositivoMovil = true;
       } else {
-        console.log("not running on Android device!");
         this.dispositivoWeb = true;
-        //this.onStartBrowserComponent();
       }
     });
   }

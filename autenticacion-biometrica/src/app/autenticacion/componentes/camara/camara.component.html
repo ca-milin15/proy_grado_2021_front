@@ -22,20 +22,10 @@
   </div>
 
   <div [hidden]=" dispositivoMovil">
-    <!-- <video #video class="video-componente"></video>
-
-    <div class="container">
-      <div class="row" >
-        <div class="col-sm-4" *ngFor="let captura of listaCapturas">
-          <img [src]="captura" alt="../../assets/user-biometric.png" class="dimension-minifoto">
-        </div>
-      </div>
-    </div>
--->
     <body onload="main()">
-      <canvas width="500" height="500" id='jeeFaceFilterCanvas'></canvas>
-      <canvas width="300" height="300" id='screenshot'></canvas>
-
+      <canvas width="600" height="600" id='jeeFaceFilterCanvas'></canvas>
+      <canvas width="600" height="600" id='screenshot'></canvas>
+      <input hidden id="appContext" type="text" value="{{contextoAplicacion}}">
     </body>
   </div>
   

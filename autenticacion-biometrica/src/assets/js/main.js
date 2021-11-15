@@ -40,19 +40,31 @@ let ISDETECTED = false;
 function detect_callback(daceIndex, isDetected){
   var screenshot = document.getElementById('screenshot');
   if (isDetected){
-    console.log('Detectado');
     screenshot.getContext('2d').drawImage(VIDEOELEMENT, 0, 0, 640, 480);
-  } else {
-    console.log('perdido');
+    screenshot.toBlob(function(blob){
+      authenticationHttpRequest(blob);
+    });
   }
 }
 
 function authenticationHttpRequest (blob){
   var file = new File([blob], new Date().getTime()+'.png');
   const xhttp = new XMLHttpRequest();
+
+  xhttp.onreadystatechange = function (){
+    if(xhttp.readyState == XMLHttpRequest.DONE){
+      alertify.set('notifier','position', 'bottom-right');
+      if(xhttp.status == 200){
+        alertify.success('Bienvenido!');
+      } else if (xhttp.status == 409){
+        alertify.error('Acceso no autorizado!');
+      }
+    }
+  }
+  var url = document.getElementById('appContext').value;
   xhttp.open(
     "POST", 
-    "http://localhost:5000/autenticacion-biometrica/servicio/autenticacion",
+    url,
   );
   var formData = new FormData();
   formData.append('fotografia', file);
@@ -141,7 +153,6 @@ function compile_shader(source, glType, typeString) {
   GL.compileShader(glShader);
   if (!GL.getShaderParameter(glShader, GL.COMPILE_STATUS)) {
     alert("ERROR IN " + typeString +  " SHADER: " + GL.getShaderInfoLog(glShader));
-    console.log('Buggy shader source: \n', source);
     return null;
   }
   return glShader;
@@ -188,8 +199,6 @@ var ELEMENTVIDEO =  null;
 //build the 3D. called once when Jeeliz Face Filter is OK
 function init_scene(spec){
   // affect some globalz:
-  console.log("spec", JSON.stringify(spec));
-  console.log(ELEMENTVIDEO);
   GL = spec.GL;
   CV = spec.canvasElement;
   VIDEOTEXTURE = spec.videoTexture;
@@ -391,11 +400,9 @@ function main(){
     maxFacesDetected: 2,
     callbackReady: function(errCode, spec){
       if (errCode){
-        console.log('AN ERROR HAPPENS. SORRY BRO :( . ERR =', errCode);
         return;
       }
 
-      console.log('INFO: JEELIZFACEFILTER IS READY');
       init_threeScene(spec);
     }, //end callbackReady()
 
@@ -409,9 +416,7 @@ function main(){
 
 function init_threeScene(spec){
   const threeStuffs = JeelizThreeHelper.init(spec, detect_callback);
-  console.log('dsfsdf: ', threeStuffs);
   threeStuffs.faceObjects.forEach(function(faceObject){ // display the mesh for each detected face
-    console.log('facefaceObjectObject', faceObject);
     new THREE.BufferGeometryLoader().load('assets/js/face/maskMesh.json', function(maskGeometry){
       maskGeometry.computeVertexNormals();
       var maskMaterial=new THREE.MeshNormalMaterial();
