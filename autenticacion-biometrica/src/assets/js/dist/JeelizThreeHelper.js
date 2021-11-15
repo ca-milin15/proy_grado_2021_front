@@ -230,8 +230,11 @@ const JeelizThreeHelper = (function(){
       _threeRenderer = new THREE.WebGLRenderer({
         context: (_isSeparateThreeCanvas) ? null : _gl,
         canvas: threeCanvas,
-        alpha: (_isSeparateThreeCanvas || spec.alpha) ? true : false
+        alpha: (_isSeparateThreeCanvas || spec.alpha) ? true : false,
+        preserveDrawingBuffer: true
       });
+
+      console.log('Prueba: ', JSON.stringify(_threeRenderer))
 
       _threeScene = new THREE.Scene();
       _threeTranslation = new THREE.Vector3();
@@ -244,16 +247,19 @@ const JeelizThreeHelper = (function(){
         setTimeout(JEELIZFACEFILTER.resize, 1000);
       }, false);
       
+      console.log('Prueba 2: ', JSON.stringify(_threeRenderer))
       const returnedDict = {
         videoMesh: _threeVideoMesh,
         renderer: _threeRenderer,
         scene: _threeScene
       };
+      console.log('Prueba 3 returnedDict: ', returnedDict)
       if (_isMultiFaces){
         returnedDict.faceObjects = _threeCompositeObjects
       } else {
         returnedDict.faceObject = _threeCompositeObjects[0];
       }
+      console.log('Prueba 4 returnedDict: ', returnedDict)
       return returnedDict;
     }, //end that.init()
 
@@ -378,8 +384,11 @@ const JeelizThreeHelper = (function(){
     create_camera: function(zNear, zFar){
       const threeCamera = new THREE.PerspectiveCamera(1, 1, (zNear) ? zNear : 0.1, (zFar) ? zFar : 100);
       that.update_camera(threeCamera);
-
       return threeCamera;
+    },
+
+    getVideoElement () {
+      return _videoElement;
     },
 
     update_camera: function(threeCamera){

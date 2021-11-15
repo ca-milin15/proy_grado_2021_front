@@ -23,7 +23,8 @@ const SETTINGS = {
   offsetYZ: [-0.1,-0.2], // offset of the 2D canvas along vertical and depth 3D axis
   canvasSizePx: 512 // resolution of the 2D canvas in pixels
 };
-
+let THREECAMERA = null;
+let VIDEOELEMENT = null;
 // some globalz:
 let CV = null, CANVAS2D = null, CTX = null, GL = null, CANVASTEXTURE = null, CANVASTEXTURENEEDSUPDATE = false;
 let PROJMATRIX = null, PROJMATRIXNEEDSUPDATE = true;
@@ -36,12 +37,26 @@ let ISDETECTED = false;
 
 
 // callback: launched if a face is detected or lost.
-function detect_callback(isDetected){
+function detect_callback(daceIndex, isDetected){
+  var screenshot = document.getElementById('screenshot');
   if (isDetected){
-    console.log('INFO in detect_callback(): DETECTED');
+    console.log('Detectado');
+    screenshot.getContext('2d').drawImage(VIDEOELEMENT, 0, 0, 640, 480);
   } else {
-    console.log('INFO in detect_callback(): LOST');
+    console.log('perdido');
   }
+}
+
+function authenticationHttpRequest (blob){
+  var file = new File([blob], new Date().getTime()+'.png');
+  const xhttp = new XMLHttpRequest();
+  xhttp.open(
+    "POST", 
+    "http://localhost:5000/autenticacion-biometrica/servicio/autenticacion",
+  );
+  var formData = new FormData();
+  formData.append('fotografia', file);
+  xhttp.send(formData);
 }
 
 //BEGIN MATRIX ALGEBRA FUNCTIONS
@@ -168,10 +183,13 @@ function update_projMatrix() {
 
 //END WEBGL HELPERS
 
+var ELEMENTVIDEO =  null;
 
 //build the 3D. called once when Jeeliz Face Filter is OK
 function init_scene(spec){
   // affect some globalz:
+  console.log("spec", JSON.stringify(spec));
+  console.log(ELEMENTVIDEO);
   GL = spec.GL;
   CV = spec.canvasElement;
   VIDEOTEXTURE = spec.videoTexture;
@@ -370,6 +388,7 @@ function main(){
   JEELIZFACEFILTER.init({
     canvasId: 'jeeFaceFilterCanvas',
     NNCPath: 'assets/js/neuralNets/', // root of NN_DEFAULT.json file
+    maxFacesDetected: 2,
     callbackReady: function(errCode, spec){
       if (errCode){
         console.log('AN ERROR HAPPENS. SORRY BRO :( . ERR =', errCode);
@@ -377,76 +396,37 @@ function main(){
       }
 
       console.log('INFO: JEELIZFACEFILTER IS READY');
-      init_scene(spec);
-      init_eventListeners();
+      init_threeScene(spec);
     }, //end callbackReady()
 
     // called at each render iteration (drawing loop):
     callbackTrack: function(detectState){
-      if (ISDETECTED && detectState.detected<SETTINGS.detectionThreshold-SETTINGS.detectionHysteresis){
-        // DETECTION LOST
-        detect_callback(false);
-        ISDETECTED = false;
-      } else if (!ISDETECTED && detectState.detected>SETTINGS.detectionThreshold+SETTINGS.detectionHysteresis){
-        // FACE DETECTED
-        detect_callback(true);
-        ISDETECTED = true;
-      }
-
-      // render the video screen:
-      GL.viewport(0,0,CV.width, CV.height);
-      GL.useProgram(SHADERVIDEO.program);
-      GL.uniformMatrix2fv(SHADERVIDEO.videoTransformMat2, false, VIDEOTRANSFORMMAT2);
-      GL.bindTexture(GL.TEXTURE_2D, VIDEOTEXTURE);
-      GL.drawElements(GL.TRIANGLES, 3, GL.UNSIGNED_SHORT, 0);
-
-      if (ISDETECTED){
-        const aspect = CV.width / CV.height;
-
-        // move the cube in order to fit the head:
-        const tanFOV = Math.tan(aspect*SETTINGS.cameraFOV*Math.PI/360); // tan(FOV/2), in radians
-        const W = detectState.s;  // relative width of the detection window (1-> whole width of the detection window)
-        const D = 1 / (2*W*tanFOV); // distance between the front face of the cube and the camera
-        
-        // coords in 2D of the center of the detection window in the viewport:
-        const xv = detectState.x;
-        const yv = detectState.y;
-        
-        // coords in 3D of the center of the cube (in the view coordinates system):
-        const z = -D-0.5;   // minus because view coordinate system Z goes backward. -0.5 because z is the coord of the center of the cube (not the front face)
-        const x = xv * D * tanFOV;
-        const y = yv * D * tanFOV / aspect;
-
-        // move and rotate the cube:
-        set_mat4Position(MOVMATRIX, x,y+SETTINGS.pivotOffsetYZ[0],z+SETTINGS.pivotOffsetYZ[1]);
-        set_mat4RotationXYZ(MOVMATRIX, detectState.rx+SETTINGS.rotationOffsetX, detectState.ry, detectState.rz);
-
-        // render the canvas above:
-        GL.clear(GL.DEPTH_BUFFER_BIT);
-        GL.enable(GL.BLEND);
-        GL.blendFunc(GL.SRC_ALPHA, GL.ONE_MINUS_SRC_ALPHA);
-        GL.useProgram(SHADERCANVAS.program);
-        GL.enableVertexAttribArray(SHADERCANVAS.position);
-        GL.enableVertexAttribArray(SHADERCANVAS.uv);
-        GL.uniformMatrix4fv(SHADERCANVAS.movMatrix, false, MOVMATRIX);
-        if (PROJMATRIXNEEDSUPDATE){
-          update_projMatrix();
-        }
-        GL.bindTexture(GL.TEXTURE_2D, CANVASTEXTURE);
-        if (CANVASTEXTURENEEDSUPDATE){
-          GL.texImage2D(GL.TEXTURE_2D, 0, GL.RGBA, GL.RGBA, GL.UNSIGNED_BYTE, CANVAS2D);
-          CANVASTEXTURENEEDSUPDATE = false;
-        }
-        GL.bindBuffer(GL.ARRAY_BUFFER, VBO_VERTEX);
-        GL.vertexAttribPointer(SHADERCANVAS.position, 3, GL.FLOAT, false,20,0);
-        GL.vertexAttribPointer(SHADERCANVAS.uv, 2, GL.FLOAT, false,20,12);
-        GL.bindBuffer(GL.ELEMENT_ARRAY_BUFFER, VBO_FACES);
-        GL.drawElements(GL.TRIANGLES, 6, GL.UNSIGNED_SHORT, 0);
-        GL.disableVertexAttribArray(SHADERCANVAS.uv);
-        GL.disableVertexAttribArray(SHADERCANVAS.position);
-        GL.disable(GL.BLEND);
-      } //end if face detected
+      JeelizThreeHelper.render(detectState, THREECAMERA);
+       //end if face detected
     } //end callbackTrack()
   }); //end JEELIZFACEFILTER.init call
 }
 
+function init_threeScene(spec){
+  const threeStuffs = JeelizThreeHelper.init(spec, detect_callback);
+  console.log('dsfsdf: ', threeStuffs);
+  threeStuffs.faceObjects.forEach(function(faceObject){ // display the mesh for each detected face
+    console.log('facefaceObjectObject', faceObject);
+    new THREE.BufferGeometryLoader().load('assets/js/face/maskMesh.json', function(maskGeometry){
+      maskGeometry.computeVertexNormals();
+      var maskMaterial=new THREE.MeshNormalMaterial();
+      var maskMesh=new THREE.Mesh(maskGeometry, maskMaterial);
+      const wireframe = new THREE.WireframeGeometry( maskGeometry );
+
+      const line = new THREE.LineSegments( wireframe );
+      line.material.depthTest = false;
+      line.material.opacity = 1;
+      line.material.transparent = true;
+      faceObject.add(line );
+    });
+  });
+
+  // CREATE THE CAMERA:
+  THREECAMERA = JeelizThreeHelper.create_camera();
+  VIDEOELEMENT = JeelizThreeHelper.getVideoElement();
+}
