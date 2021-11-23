@@ -16,3 +16,16 @@
   width: 93%;
   padding-left: 15%;
 }
+
+.content{
+  background: rgb(0,36,36);
+  background: radial-gradient(circle, rgba(0,36,36,0.4906337535014006) 21%, rgba(0,255,158,0.7511379551820728) 100%, rgba(255,255,255,0) 100%);
+}
+
+canvas {
+  border: 3px inset black;
+}
+
+.content-canvas {
+  margin: 5%;
+}

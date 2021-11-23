@@ -40,7 +40,8 @@ export class RegistroPage implements OnInit {
         this.utilidadesService.presentAlert('Exito!', 'La operación se ha llevado a cabo exitosamente.', '');
         this.utilidadesService.detenerSpinner();
       },(err) => {
-        this.utilidadesService.presentAlert('Error!', 'Ha ocurrido un error en la operación.', '');
+        console.log('error: ', err);
+        this.utilidadesService.presentAlert('Atención!', err.error.mensaje, '');
         this.utilidadesService.detenerSpinner();
       });
     });

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { LoadingController, NavController } from '@ionic/angular';
+import { LoadingController, MenuController, NavController } from '@ionic/angular';
 import { LocalStorageService } from 'angular-web-storage';
 import { AutenticacionServiceService } from '../autenticacion-service.service';
 import { UtilidadesService } from '../utilidades/utilidades.service';
@@ -25,10 +25,16 @@ export class LoginPage implements OnInit {
     private autenticacionServiceService: AutenticacionServiceService,
     private utilidadesService: UtilidadesService,
     private localStorageService: LocalStorageService,
-    private loadingController: LoadingController) { }
+    private loadingController: LoadingController,
+    private menuCtrl: MenuController) { }
 
   ngOnInit() {
     this.version = environment.environment
+    this.menuCtrl.enable (false);
+  }
+
+  ionViewWillEnter(){
+    this.menuCtrl.enable (false);
   }
 
   continuar(){
@@ -44,6 +50,7 @@ export class LoginPage implements OnInit {
           this.localStorageService.set('usuario', ok);
           this.navCtrl.navigateForward('folder');
           this.utilidadesService.detenerSpinner();
+          this.menuCtrl.enable (true);
         }, (err) => {
           this.utilidadesService.errorProcess(err);
           this.utilidadesService.detenerSpinner();

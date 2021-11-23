@@ -234,8 +234,6 @@ const JeelizThreeHelper = (function(){
         preserveDrawingBuffer: true
       });
 
-      console.log('Prueba: ', JSON.stringify(_threeRenderer))
-
       _threeScene = new THREE.Scene();
       _threeTranslation = new THREE.Vector3();
 
@@ -247,19 +245,16 @@ const JeelizThreeHelper = (function(){
         setTimeout(JEELIZFACEFILTER.resize, 1000);
       }, false);
       
-      console.log('Prueba 2: ', JSON.stringify(_threeRenderer))
       const returnedDict = {
         videoMesh: _threeVideoMesh,
         renderer: _threeRenderer,
         scene: _threeScene
       };
-      console.log('Prueba 3 returnedDict: ', returnedDict)
       if (_isMultiFaces){
         returnedDict.faceObjects = _threeCompositeObjects
       } else {
         returnedDict.faceObject = _threeCompositeObjects[0];
       }
-      console.log('Prueba 4 returnedDict: ', returnedDict)
       return returnedDict;
     }, //end that.init()
 
@@ -404,7 +399,6 @@ const JeelizThreeHelper = (function(){
       const videoAspectRatio = vw / vh;
       const fovFactor = (vh > vw) ? (1.0 / videoAspectRatio) : 1.0;
       const fov = _settings.cameraMinVideoDimFov * fovFactor;
-      console.log('INFO in JeelizThreeHelper - update_camera(): Estimated vertical video FoV is', fov);
       
       // compute X and Y offsets in pixels:
       let scale = 1.0;
@@ -423,7 +417,6 @@ const JeelizThreeHelper = (function(){
       // apply parameters:
       threeCamera.aspect = _canvasAspectRatio;
       threeCamera.fov = fov;
-      console.log('INFO in JeelizThreeHelper.update_camera(): camera vertical estimated FoV is', fov, 'deg');
       threeCamera.setViewOffset(cvws, cvhs, offsetX, offsetY, cvw, cvh);
       threeCamera.updateProjectionMatrix();
 

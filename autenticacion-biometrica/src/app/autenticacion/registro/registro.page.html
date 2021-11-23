@@ -1,11 +1,13 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Registro biometria</ion-title>
+    <ion-title>Registro biométrico</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <app-camara
-    (fotografia) = "enviarFotografia($event)"
-  ></app-camara>
+<ion-content >
+  <div class="content">
+    <app-camara
+      (fotografia) = "enviarFotografia($event)"
+    ></app-camara>
+  </div>
 </ion-content>

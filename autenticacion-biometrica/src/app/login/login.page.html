@@ -1,26 +1,23 @@
-<ion-header>
-</ion-header>
-
-<ion-content>
-  <ion-header >
-    <img
-      src="../../assets/icon/logoFacial.jpg"
-    />
-
-  </ion-header>
-  <body>
+<ion-content >
+  <body class="content">
     <form [formGroup]="form" class="padding">
-        <ion-item>
-          <ion-label position="floating">Usuario</ion-label>
-          <ion-input type="text" formControlName="usuario"></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-label position="floating">Clave</ion-label>
-          <ion-input type="password" formControlName="clave"></ion-input>
-        </ion-item>
-        <ion-button expand="block" (click)="continuar()">PRESIONE PARA CONTINUAR</ion-button>
+      <ion-card class="col-lg-6 col-xs-6 h-20 mt-50 border border-secondary justify-content-end">
+        <ion-card-header>
+          <img src="../../assets/icon/logoFacial.jpg"/>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-item >
+            <ion-label position="floating">Usuario</ion-label>
+            <ion-input type="text" formControlName="usuario" form-control-lg form-control-sm></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating">Clave</ion-label>
+            <ion-input type="password" formControlName="clave"></ion-input>
+          </ion-item>
+          <ion-button class="col-lg-12 col-xs-8 " (click)="continuar()">PRESIONE PARA CONTINUAR</ion-button>
+        </ion-card-content>
+      </ion-card>
     </form>
-    <span>{{version}}</span>
   </body>
   <!--<ion-footer class="padding">
     <img class="padding"
@@ -28,3 +25,10 @@
     />
   </ion-footer> -->
 </ion-content>
+
+<footer class="bg-light text-center ">
+  <div class="text-center p-3 font-weight-bold" >
+    © 2020 Copyright.
+    <span>{{version}}</span>
+  </div>
+</footer>

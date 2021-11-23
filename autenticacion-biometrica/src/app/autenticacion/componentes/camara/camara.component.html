@@ -1,32 +1,39 @@
 <ion-content>
-  <div *ngIf="dispositivoMovil">
-    <img [src]="imagenUrl" alt="../../assets/user-biometric.png" class="dimension-foto">
-    <ion-button 
-      (click)="tomarFoto()" 
-      color="primary" 
-      expand="block"
-      icon="loop2"
-    >
-      Tomar foto
-    </ion-button >
-    <ion-button 
-      icon="plus" 
-      *ngIf="image" 
-      (click)="enviarFotografia()" 
-      color="success" 
-      expand="block"
-      icon="checkmark"
-    >
-      Enviar fotografia
-    </ion-button>
-  </div>
-
-  <div [hidden]=" dispositivoMovil">
-    <body onload="main()">
-      <canvas width="600" height="600" id='jeeFaceFilterCanvas'></canvas>
-      <canvas width="600" height="600" id='screenshot'></canvas>
-      <input hidden id="appContext" type="text" value="{{contextoAplicacion}}">
-    </body>
-  </div>
+  <body class="content">
+    <div *ngIf="dispositivoMovil">
+      <img [src]="imagenUrl" alt="../../assets/user-biometric.png" class="dimension-foto">
+      <ion-button 
+        (click)="tomarFoto()" 
+        color="primary" 
+        expand="block"
+        icon="loop2"
+      >
+        Tomar foto
+      </ion-button >
+      <ion-button 
+        icon="plus" 
+        *ngIf="image" 
+        (click)="enviarFotografia()" 
+        color="success" 
+        expand="block"
+        icon="checkmark"
+      >
+        Enviar fotografia
+      </ion-button>
+    </div>
   
+    <div [hidden]=" dispositivoMovil">
+      <body onload="main()">
+        <div class="row">
+          <div class="content-canvas col-lg-4">
+            <canvas width="478" height="485" id='jeeFaceFilterCanvas'></canvas>
+          </div>
+          <div class="content-canvas col-lg-4">
+            <canvas width="478" height="485" id='screenshot'></canvas>
+          </div>
+          <input hidden id="appContext" type="text" value="{{contextoAplicacion}}">
+        </div>
+      </body>
+    </div>
+  </body>
 </ion-content>

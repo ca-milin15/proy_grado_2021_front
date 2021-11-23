@@ -54,8 +54,10 @@ function authenticationHttpRequest (blob){
   xhttp.onreadystatechange = function (){
     if(xhttp.readyState == XMLHttpRequest.DONE){
       alertify.set('notifier','position', 'bottom-right');
+      var contentDispoUsuario = xhttp.getResponseHeader('Content-Disposition').split(';');
+      var nombre = contentDispoUsuario[contentDispoUsuario.length - 1].split('=');
       if(xhttp.status == 200){
-        alertify.success('Bienvenido!');
+        alertify.success('Bienvenido ' + nombre[nombre.length - 1].toUpperCase() + ' !');
       } else if (xhttp.status == 409){
         alertify.error('Acceso no autorizado!');
       }
@@ -400,9 +402,11 @@ function main(){
     maxFacesDetected: 2,
     callbackReady: function(errCode, spec){
       if (errCode){
+        console.log('Ha ocurrido un error. errCode: ', errCode)
         return;
       }
 
+      console.log('INFO: JEELIZFACEFILTER IS READY');
       init_threeScene(spec);
     }, //end callbackReady()
 

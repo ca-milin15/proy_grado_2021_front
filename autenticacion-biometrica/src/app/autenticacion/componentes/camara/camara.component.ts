@@ -55,6 +55,7 @@ export class CamaraComponent implements OnInit {
       if (this.platform.is('android')) {
         this.dispositivoMovil = true;
       } else {
+        //this.dispositivoMovil = true;
         this.dispositivoWeb = true;
       }
     });
