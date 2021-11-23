@@ -1,62 +1,54 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { LoadingController, MenuController, NavController } from '@ionic/angular';
+import { LoadingController, NavController } from '@ionic/angular';
 import { LocalStorageService } from 'angular-web-storage';
 import { AutenticacionServiceService } from '../autenticacion-service.service';
 import { UtilidadesService } from '../utilidades/utilidades.service';
-import { environment } from '../../environments/environment';
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.page.html',
-  styleUrls: ['./login.page.scss'],
+  selector: 'app-autoregistro',
+  templateUrl: './autoregistro.page.html',
+  styleUrls: ['./autoregistro.page.scss'],
 })
-export class LoginPage implements OnInit {
+export class AutoregistroPage implements OnInit {
 
-  autenticacionBasicaEndpoint: string = '/usuario/autenticacion-basica';
+  autoregistroEndpoint: string = '/usuario/autoregistro';
 
   form = new FormGroup({
     usuario: new FormControl('', Validators.required),
-    clave: new FormControl('', Validators.required)
+    clave: new FormControl('', Validators.required),
+    nombre: new FormControl('', Validators.required),
+    apellidos: new FormControl('', Validators.required),
+    identificacion: new FormControl('', Validators.required)
   });
-  version: any;
-
+  
   constructor(private navCtrl: NavController,
     private autenticacionServiceService: AutenticacionServiceService,
     private utilidadesService: UtilidadesService,
     private localStorageService: LocalStorageService,
-    private loadingController: LoadingController,
-    private menuCtrl: MenuController) { }
+    private loadingController: LoadingController) { }
 
   ngOnInit() {
-    this.version = environment.environment
-    this.menuCtrl.enable (false);
-  }
-
-  ionViewWillEnter(){
-    this.menuCtrl.enable (false);
-  }
-
-  autoRegistro(){
-    this.navCtrl.navigateForward('autoregistro');
   }
 
   continuar(){
     if (this.form.valid) {
       let payload = {
         usuario: this.form.value.usuario,
-        clave: this.form.value.clave
+        clave: this.form.value.clave,
+        nombre: this.form.value.nombre,
+        apellidos: this.form.value.apellidos,
+        identificacion: this.form.value.identificacion
       }
       
       this.utilidadesService.inicializarSpinner().then(() => {
-        this.autenticacionServiceService.ejecutarPeticion(this.autenticacionBasicaEndpoint, payload)
+        this.autenticacionServiceService.ejecutarPeticion(this.autoregistroEndpoint, payload)
         .subscribe((ok) => {
           this.localStorageService.set('usuario', ok);
           this.navCtrl.navigateForward('folder');
           this.utilidadesService.detenerSpinner();
-          this.menuCtrl.enable (true);
         }, (err) => {
-          this.utilidadesService.errorProcess(err);
+          this.utilidadesService.presentAlert('Atención!', err.error.mensaje, '');
           this.utilidadesService.detenerSpinner();
         });
       });
@@ -65,5 +57,4 @@ export class LoginPage implements OnInit {
     }
    
   }
-
 }

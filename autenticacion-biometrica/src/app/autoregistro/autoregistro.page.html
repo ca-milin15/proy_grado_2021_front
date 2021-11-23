@@ -1,0 +1,32 @@
+<ion-content>
+  <form [formGroup]="form" class="padding">
+    <ion-card class="col-lg-6 col-xs-6 h-20 mt-50 border border-secondary justify-content-end">
+      <ion-card-header>
+        <ion-icon style="width: 95%;" name="person-add" ></ion-icon>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-item >
+          <ion-label position="floating">Usuario</ion-label>
+          <ion-input type="text" formControlName="usuario" form-control-lg form-control-sm></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Clave</ion-label>
+          <ion-input type="password" formControlName="clave"></ion-input>
+        </ion-item>
+        <ion-item >
+          <ion-label position="floating">Nombre</ion-label>
+          <ion-input type="text" formControlName="nombre" form-control-lg form-control-sm></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Apellidos</ion-label>
+          <ion-input type="text" formControlName="apellidos"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Identificación</ion-label>
+          <ion-input type="text" formControlName="identificacion"></ion-input>
+        </ion-item>
+        <ion-button class="col-lg-12 col-xs-8" color="success" (click)="continuar()">PRESIONE PARA CONTINUAR</ion-button>
+      </ion-card-content>
+    </ion-card>
+  </form>
+</ion-content>

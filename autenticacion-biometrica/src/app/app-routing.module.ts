@@ -25,6 +25,10 @@ const routes: Routes = [
   },  {
     path: 'autenticacion-fin-transac',
     loadChildren: () => import('./autenticacion-fin-transac/autenticacion-fin-transac.module').then( m => m.AutenticacionFinTransacPageModule)
+  },
+  {
+    path: 'autoregistro',
+    loadChildren: () => import('./autoregistro/autoregistro.module').then( m => m.AutoregistroPageModule)
   }
 
 
