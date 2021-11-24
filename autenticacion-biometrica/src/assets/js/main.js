@@ -54,10 +54,10 @@ function authenticationHttpRequest (blob){
   xhttp.onreadystatechange = function (){
     if(xhttp.readyState == XMLHttpRequest.DONE){
       alertify.set('notifier','position', 'bottom-right');
-      var contentDispoUsuario = xhttp.getResponseHeader('Content-Disposition').split(';');
-      var nombre = contentDispoUsuario[contentDispoUsuario.length - 1].split('=');
       if(xhttp.status == 200){
-        alertify.success('Bienvenido ' + nombre[nombre.length - 1].toUpperCase() + ' !');
+        var contentDispoUsuario = xhttp.getResponseHeader('Content-Disposition').split(';');
+        var nombre = contentDispoUsuario[contentDispoUsuario.length - 1].split('=');
+        alertify.success('Bienvenido(a) ' + nombre[nombre.length - 1].toUpperCase() + ' !');
       } else if (xhttp.status == 409){
         alertify.error('Acceso no autorizado!');
       }
