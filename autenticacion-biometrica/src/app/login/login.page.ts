@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { LoadingController, MenuController, NavController } from '@ionic/angular';
+import { LoadingController, MenuController, NavController, Platform } from '@ionic/angular';
 import { LocalStorageService } from 'angular-web-storage';
 import { AutenticacionServiceService } from '../autenticacion-service.service';
 import { UtilidadesService } from '../utilidades/utilidades.service';
@@ -20,17 +20,24 @@ export class LoginPage implements OnInit {
     clave: new FormControl('', Validators.required)
   });
   version: any;
+  mostrarAutoregistro: boolean = false;
 
   constructor(private navCtrl: NavController,
     private autenticacionServiceService: AutenticacionServiceService,
     private utilidadesService: UtilidadesService,
     private localStorageService: LocalStorageService,
     private loadingController: LoadingController,
-    private menuCtrl: MenuController) { }
+    private menuCtrl: MenuController,
+    private plataforma: Platform) { }
 
   ngOnInit() {
     this.version = environment.environment
     this.menuCtrl.enable (false);
+    this.plataforma.ready().then(() => {
+      if (this.plataforma.is('android')) {
+        this.mostrarAutoregistro = true;
+      }
+    });
   }
 
   ionViewWillEnter(){

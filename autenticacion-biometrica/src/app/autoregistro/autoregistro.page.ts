@@ -44,8 +44,7 @@ export class AutoregistroPage implements OnInit {
       this.utilidadesService.inicializarSpinner().then(() => {
         this.autenticacionServiceService.ejecutarPeticion(this.autoregistroEndpoint, payload)
         .subscribe((ok) => {
-          this.localStorageService.set('usuario', ok);
-          this.navCtrl.navigateForward('folder');
+          this.navCtrl.navigateForward('login');
           this.utilidadesService.detenerSpinner();
         }, (err) => {
           this.utilidadesService.presentAlert('Atención!', err.error.mensaje, '');
